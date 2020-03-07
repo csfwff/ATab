@@ -34,7 +34,7 @@ public class ATabItem extends View {
 
 
     private int baseLinePos = 20; //基线距离顶部的高度 默认20dp
-    private int upHeight = 10; //凸起的高度 默认12dp，需要留一部分空间显示弹性效果
+    private int upHeight = 10; //凸起的高度 默认10dp，需要留一部分空间显示弹性效果
     private int bgColor = 0; //背景颜色，默认白色
     private Drawable uncheckIcon; //未选中icon
     private Drawable checkIcon; //选中icon
@@ -97,17 +97,21 @@ public class ATabItem extends View {
 
 
     public ATabItem(Context context) {
-        this(context,null);
+        super(context);
     }
 
     public ATabItem(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(context,attrs);
+        this(context, attrs, 0);
     }
 
     public ATabItem(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context,attrs);
+        this.context = context;
+        //先获取属性
+        TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ATabItem);
+        initAttrs(typedArray);
+        typedArray.recycle();
+        init();
     }
 
 
@@ -117,12 +121,13 @@ public class ATabItem extends View {
 
     }
 
-    private void  init(Context context, AttributeSet attrs) {
-        this.context = context;
-        //先获取属性
-        TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ATabItem);
-        initAttrs(typedArray);
-        typedArray.recycle();
+
+
+    private void  init() {
+
+        upHeight = baseLinePos - upHeight;
+        nowUpHeight = baseLinePos;
+
         //初始化画笔
         bgPaint = new Paint();
         bgPaint.setColor(bgColor);
@@ -147,22 +152,6 @@ public class ATabItem extends View {
         rect = new Rect(0,0,0,0);
         msgRect = new RectF(0,0,0,0);
 
-        super.setClickable(true);
-
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isAnimating)return;
-                if(isChecked){
-                    isChecked = false;
-                    uncheckAnimator.start();
-                }else {
-                    isChecked = true;
-                    checkAnimator.start();
-                }
-            }
-        });
-
         //选中动画
         checkAnimator = ValueAnimator.ofInt(baseLinePos,upHeight);
         checkAnimator.addUpdateListener(updateListener);
@@ -183,8 +172,7 @@ public class ATabItem extends View {
     private void initAttrs(TypedArray typedArray){
         baseLinePos = typedArray.getDimensionPixelOffset(R.styleable.ATabItem_baseLinePos,dip2px(context,baseLinePos));
         upHeight = typedArray.getDimensionPixelOffset(R.styleable.ATabItem_upHeight,dip2px(context,upHeight));
-        upHeight = baseLinePos - upHeight;
-        nowUpHeight = baseLinePos;
+
         bgColor = typedArray.getColor(R.styleable.ATabItem_bgColor,Color.WHITE);
 
         uncheckColor = typedArray.getColor(R.styleable.ATabItem_uncheckColor,Color.DKGRAY);
@@ -257,8 +245,13 @@ public class ATabItem extends View {
         }
     }
 
+    //设置选中状态
     public void setCheckStatus(boolean checked){
         isChecked = checked;
+        if(isAnimating){
+            uncheckAnimator.cancel();
+            checkAnimator.cancel();
+        }
         if(isChecked){
             checkAnimator.start();
         }else {
@@ -269,6 +262,13 @@ public class ATabItem extends View {
     public boolean getCheckStatus(){
         return isChecked;
     }
+
+
+    public void setMsg(String msg){
+        this.msg = msg;
+        invalidate();
+    }
+
 
 
 
@@ -291,6 +291,205 @@ public class ATabItem extends View {
         msgRect.top =  (int) (y + fontMetrics.top -msgPadding);
         msgRect.bottom = (int) (y + fontMetrics.bottom +msgPadding);
         msgRect.right =  (int) (x + halfTextLength+msgPadding);
+    }
+
+    public ATabItem create(Builder builder){
+        this.context = builder.context;
+        this.baseLinePos = builder.baseLinePos;
+        this.upHeight = builder.upHeight;
+        this.bgColor = builder.bgColor;
+        this.uncheckIcon = builder.uncheckIcon;
+        this.checkIcon = builder.checkIcon;
+        this.iconWidth = builder.iconWidth;
+        this.iconHeight = builder.iconHeight;
+        this.uncheckColor = builder.uncheckColor;
+        this.checkColor = builder.checkColor;
+        this.checkRadius = builder.checkRadius;
+        this.iconToBase = builder.iconToBase;
+        this.textMarginBottom = builder.textMarginBottom;
+        this.textSize = builder.textSize;
+        this.title = builder.title;
+        this.msg = builder.msg;
+        this.msgSize = builder.msgSize;
+        this.msgColor = builder.msgColor;
+        this.msgBgColor = builder.msgBgColor;
+        this.msgToTop = builder.msgToTop;
+        this.msgToCenter = builder.msgToCenter;
+        this.msgPadding = builder.msgPadding;
+        this.msgRadius = builder.msgRadius;
+
+        init();
+        return this;
+
+    }
+
+    public static final class Builder {
+        private Context context;
+        private int baseLinePos = 20; //基线距离顶部的高度 默认20dp
+        private int upHeight = 10; //凸起的高度 默认10dp，需要留一部分空间显示弹性效果
+        private int bgColor = 0; //背景颜色，默认白色
+        private Drawable uncheckIcon; //未选中icon
+        private Drawable checkIcon; //选中icon
+        private int iconWidth = 25;//icon宽度
+        private int iconHeight = 25;//icon高度
+        private int uncheckColor; //未选中颜色
+        private int checkColor; //选中颜色
+        private int checkRadius = 18; //选中的背景圆半径，默认18dp
+        private int iconToBase = 14; //icon中心到基线的距离，默认14dp
+        private int textMarginBottom = 8; //文字下边距，默认8dp
+        private int textSize = 12; //文字大小，默认12sp
+        private String title;  //item的名称
+
+        private String msg; //消息
+        private int msgSize =8; //消息文字大小，默认8sp
+        private int msgColor; //消息文字颜色
+        private int msgBgColor; //消息背景颜色
+        private int msgToTop = 34; //消息距顶部距离，默认34dp
+        private int msgToCenter = 18; //消息距中心的x距离，默认18dp
+        private int msgPadding = 2; //消息内边距，默认2dp
+        private int msgRadius = 18; //消息背景圆角半径，默认18dp
+
+        public Builder (Context context){
+            this.context = context;
+            baseLinePos = dip2px(context,baseLinePos);
+            upHeight = dip2px(context,upHeight);
+            bgColor = getColor(android.R.color.white);
+            iconWidth = dip2px(context,iconWidth);
+            iconHeight = dip2px(context,iconHeight);
+            uncheckColor = getColor(android.R.color.darker_gray);
+            checkColor = getColor(android.R.color.holo_green_dark);
+            checkRadius = dip2px(context,checkRadius);
+            iconToBase = dip2px(context,iconToBase);
+            textMarginBottom = dip2px(context,textMarginBottom);
+            textSize = sp2px(context,textSize);
+            msgSize = sp2px(context,msgSize);
+            msgColor = getColor(android.R.color.white);
+            msgBgColor = getColor(android.R.color.holo_red_light);
+            msgToTop = dip2px(context,msgToTop);
+            msgToCenter = dip2px(context,msgToCenter);
+            msgPadding = dip2px(context,msgPadding);
+            msgRadius = dip2px(context,msgRadius);
+        }
+
+        public Builder baseLinePos(int baseLinePos){
+            this.baseLinePos=dip2px(context,baseLinePos);
+            return this;
+        }
+
+        public Builder upHeight(int upHeight){
+            this.upHeight=dip2px(context,upHeight);
+            return this;
+        }
+
+        public Builder bgColor(int bgColor){
+            this.bgColor=getColor(bgColor);
+            return this;
+        }
+
+        public Builder uncheckIcon(Drawable uncheckIcon){
+            this.uncheckIcon = uncheckIcon;
+            return this;
+        }
+
+        public Builder checkIcon(Drawable checkIcon){
+            this.checkIcon = checkIcon;
+            return this;
+        }
+
+        public Builder iconWidth(int iconWidth){
+            this.iconWidth = dip2px(context,iconWidth);
+            return this;
+        }
+
+        public Builder iconHeight(int iconHeight){
+            this.iconHeight = dip2px(context,iconHeight);
+            return this;
+        }
+
+        public Builder uncheckColor(int uncheckColor){
+            this.uncheckColor = getColor(uncheckColor);
+            return this;
+        }
+        public Builder checkColor(int checkColor){
+            this.checkColor = getColor(checkColor);
+            return this;
+        }
+        public Builder checkRadius(int checkRadius){
+            this.checkRadius = dip2px(context,checkRadius);
+            return this;
+        }
+        public Builder iconToBase(int iconToBase){
+            this.iconToBase = dip2px(context,iconToBase);
+            return this;
+        }
+
+        public Builder textMarginBottom(int textMarginBottom){
+            this.textMarginBottom = dip2px(context,textMarginBottom);
+            return this;
+        }
+
+        public Builder textSize(int textSize){
+            this.textSize = sp2px(context,textSize);
+            return this;
+        }
+
+        public Builder title(String title){
+            this.title = title;
+            return this;
+        }
+
+        public Builder title(int title){
+            this.title = context.getResources().getString(title);
+            return this;
+        }
+
+        public Builder msg(String msg){
+            this.msg = msg;
+            return this;
+        }
+
+        public Builder msgSize(int msgSize){
+            this.msgSize = sp2px(context,msgSize);
+            return this;
+        }
+        public Builder msgColor(int msgColor){
+            this.msgColor = getColor(msgColor);
+            return this;
+        }
+        public Builder msgBgColor(int msgBgColor){
+            this.msgBgColor = getColor(msgBgColor);
+            return this;
+        }
+
+        public Builder msgToTop(int msgToTop){
+            this.msgToTop = dip2px(context,msgToTop);
+            return this;
+        }
+
+        public Builder msgToCenter(int msgToCenter){
+            this.msgToCenter = dip2px(context,msgToCenter);
+            return this;
+        }
+
+        public Builder msgPadding(int msgPadding){
+            this.msgPadding = dip2px(context,msgPadding);
+            return this;
+        }
+
+        public Builder msgRadius(int msgRadius){
+            this.msgRadius = dip2px(context,msgRadius);
+            return this;
+        }
+
+
+        public ATabItem create(){
+            ATabItem aTabItem = new ATabItem(context);
+            return aTabItem.create(this);
+        }
+
+        private int getColor(int colorId){
+            return context.getResources().getColor(colorId);
+        }
     }
 
 }
