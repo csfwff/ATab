@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ATabItem">
+        <!-- 基线距顶部的距离-->
+        <attr name="baseLinePos" format="dimension" />
+        <!--凸起的高度，需要小于baseLinePos，需要留一部分空间显示弹性效果-->
+        <attr name="upHeight" format="dimension" />
+        <!-- 背景颜色-->
+        <attr name="bgColor" format="color" />
+        <!--未选中icon-->
+        <attr name="uncheckIcon" format="reference"/>
+        <!--选中icon-->
+        <attr name="checkIcon" format="reference"/>
+        <!--icon的宽度-->
+        <attr name="iconWidth" format="dimension" />
+        <!--icon的高度-->
+        <attr name="iconHeight" format="dimension" />
+        <!--未选中颜色-->
+        <attr name="uncheckColor" format="color"/>
+        <!--选中颜色-->
+        <attr name="checkColor" format="color"/>
+        <!--选中的背景圆半径-->
+        <attr name="checkRadius" format="dimension"/>
+        <!--icon中心到基线的距离-->
+        <attr name="iconToBase" format="dimension"/>
+        <!--文字下边距-->
+        <attr name="textMarginBottom" format="dimension"/>
+        <!--文字大小-->
+        <attr name="textSize" format="dimension"/>
+        <!--文字-->
+        <attr name="title" format="string"/>
+        <!--消息-->
+        <attr name="msgText" format="string"/>
+        <!--消息文字大小-->
+        <attr name="msgSize" format="dimension"/>
+        <!--消息文字颜色-->
+        <attr name="msgColor" format="color"/>
+        <!--消息背景颜色-->
+        <attr name="msgBgColor" format="color"/>
+        <!--消息距顶部距离-->
+        <attr name="msgToTop" format="dimension"/>
+        <!--消息距中心的x距离-->
+        <attr name="msgToCenter" format="dimension"/>
+        <!--消息内边距-->
+        <attr name="msgPadding" format="dimension"/>
+        <!--消息背景圆角半径-->
+        <attr name="msgRadius" format="dimension"/>
+    </declare-styleable>
+</resources>

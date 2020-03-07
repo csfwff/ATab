@@ -1,0 +1,3 @@
+rootProject.name='ATabDemo'
+include ':app'
+include ':atab'
