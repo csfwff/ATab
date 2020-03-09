@@ -4,7 +4,7 @@
 项目地址：https://github.com/csfwff/ATab
 
 ## 效果图
-
+[video](https://github.com/csfwff/ATab/blob/master/screenshot/SVID_20200309_094758_1.mp4?raw=true)
 
 ## 食用方法
 1. 引入
@@ -112,10 +112,10 @@
         <attr name="msgPadding" format="dimension"/>
         <!--消息背景圆角半径-->
         <attr name="msgRadius" format="dimension"/>
-    </declare-styleable>
+</declare-styleable>
 ```
 部分含糊的属性看如下说明
-
+![img](https://github.com/csfwff/ATab/raw/master/screenshot/QQ%E5%9B%BE%E7%89%8720200309113000.png)
 
 ## ATab方法说明
 1. 设置选中，举例：
