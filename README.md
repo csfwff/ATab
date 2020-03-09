@@ -4,7 +4,8 @@
 项目地址：https://github.com/csfwff/ATab
 
 ## 效果图
-[video](https://github.com/csfwff/ATab/blob/master/screenshot/SVID_20200309_094758_1.mp4?raw=true)
+[点这里看](https://sszsj.top/articles/2020/03/09/1583725597624.html)
+[或者video](https://github.com/csfwff/ATab/blob/master/screenshot/SVID_20200309_094758_1.mp4?raw=true)
 
 ## 食用方法
 1. 引入
