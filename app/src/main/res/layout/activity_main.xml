@@ -18,6 +18,11 @@
             android:layout_height="wrap_content"/>
         <Button
             android:layout_width="wrap_content"
+            android:id="@+id/select_btn"
+            android:text="设置2选中"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
             android:id="@+id/msg_btn"
             android:text="清除消息"
             android:layout_height="wrap_content"/>

@@ -28,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
                 aTab.setMsg(3,null);
             }
         });
+        findViewById(R.id.select_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                aTab.setSelect(2);
+            }
+        });
+
 
         aTab.addItem(new ATabItem.Builder(this).title("首页").uncheckIcon(getDrawable(R.mipmap.home_un))
                 .checkIcon(getDrawable(R.mipmap.home)).checkColor(R.color.colorPrimary).create());

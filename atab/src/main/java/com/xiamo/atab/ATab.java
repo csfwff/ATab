@@ -59,7 +59,6 @@ public class ATab extends LinearLayout {
         }
     }
 
-
     //设置选中
     public void setSelect(int selectPos){
         updateSelect(selectPos);
