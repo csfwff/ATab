@@ -43,7 +43,7 @@ public class ATabItem extends View {
     private int uncheckColor; //未选中颜色
     private int checkColor; //选中颜色
     private int checkRadius = 18; //选中的背景圆半径，默认18dp
-    private int iconToBase = 14; //icon中心到基线的距离，默认14dp
+    private int iconToBase = 14; //icon顶部到基线的距离，默认14dp
     private int textMarginBottom = 8; //文字下边距，默认8dp
     private int textSize = 12; //文字大小，默认12sp
     private String title;  //item的名称

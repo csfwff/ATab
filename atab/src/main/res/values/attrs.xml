@@ -21,7 +21,7 @@
         <attr name="checkColor" format="color"/>
         <!--选中的背景圆半径-->
         <attr name="checkRadius" format="dimension"/>
-        <!--icon中心到基线的距离-->
+        <!--icon顶部到基线的距离-->
         <attr name="iconToBase" format="dimension"/>
         <!--文字下边距-->
         <attr name="textMarginBottom" format="dimension"/>
